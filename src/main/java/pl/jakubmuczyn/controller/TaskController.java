@@ -12,7 +12,7 @@ import pl.jakubmuczyn.model.TaskRepository;
 import java.util.List;
 
 @RestController
-class TaskController {
+class  TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
     
