@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
+
+import java.util.List;
 
 @RepositoryRestController
 class TaskController {
@@ -18,14 +21,14 @@ class TaskController {
     }
     
     @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
-    ResponseEntity<?> readAllTasks() {
+    ResponseEntity<List<Task>> readAllTasks() {
         logger.warn("Exposing all the tasks!");
         return ResponseEntity.ok(repository.findAll());
     }
     
     @GetMapping(value = "/tasks")
-    ResponseEntity<?> readAllTasks(Pageable page) {
+    ResponseEntity<List<Task>> readAllTasks(Pageable page) {
         logger.info("Custom pageable");
-        return ResponseEntity.ok(repository.findAll(page));
+        return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 }
