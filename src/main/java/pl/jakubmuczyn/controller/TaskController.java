@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
+import javax.swing.text.html.Option;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 class TaskController {
@@ -18,6 +21,12 @@ class TaskController {
     
     TaskController(final TaskRepository repository) {
         this.repository = repository;
+    }
+    
+    @PostMapping("/tasks")
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate) {
+        Task result = repository.save(toCreate);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
     
     @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
@@ -30,6 +39,13 @@ class TaskController {
     ResponseEntity<List<Task>> readAllTasks(Pageable page) {
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
+    }
+    
+    @GetMapping("/tasks/{id}")
+    ResponseEntity<Task> readTask(@PathVariable int id) {
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
     
     @PutMapping("/tasks/{id}")
