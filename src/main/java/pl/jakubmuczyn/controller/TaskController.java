@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
-import javax.swing.text.html.Option;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 class TaskController {
