@@ -2,7 +2,13 @@ package pl.jakubmuczyn.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -15,31 +21,4 @@ public class Task {
     private String description;
     
     private boolean done;
-    
-    Task() {
-    }
-    
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(final int id) {
-        this.id = id;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    void setDescription(final String description) {
-        this.description = description;
-    }
-    
-    public boolean isDone() {
-        return done;
-    }
-    
-    void setDone(final boolean done) {
-        this.done = done;
-    }
 }
