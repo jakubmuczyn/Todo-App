@@ -53,8 +53,11 @@ class TaskController {
             return ResponseEntity.notFound().build();
         }
         
-        toUpdate.setId(id);
-        repository.save(toUpdate);
+        repository.findById(id)
+                .ifPresent(task -> {
+                    task.updateFrom(toUpdate);
+                    repository.save(task);
+                });
         return ResponseEntity.noContent().build();
     }
     
