@@ -4,30 +4,28 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "task_groups")
+public class TaskGroup {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @NotBlank(message = "Task's description must not be empty")
+    @NotBlank(message = "Task group's description must not be empty")
     private String description;
     
     private boolean done;
     
-    private LocalDateTime deadline;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group") // jedna grupa przypisana do wielu tasków
+    private Set<Task> tasks;
     
-    @Embedded
-    private Audit audit = new Audit();
-    
-    @ManyToOne // many tasks to one group
-    @JoinColumn(name = "task_group_id")
-    private TaskGroup group;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
     
     public int getId() {
         return id;
@@ -53,26 +51,19 @@ public class Task {
         this.done = done;
     }
     
-    public LocalDateTime getDeadline() {
-        return deadline;
+    public Set<Task> getTasks() {
+        return tasks;
     }
     
-    void setDeadline(final LocalDateTime deadline) {
-        this.deadline = deadline;
+    void setTasks(final Set<Task> tasks) {
+        this.tasks = tasks;
     }
     
-    TaskGroup getGroup() {
-        return group;
+    Project getProject() {
+        return project;
     }
     
-    void setGroup(final TaskGroup group) {
-        this.group = group;
-    }
-    
-    public void updateFrom(final Task source) {
-        description = source.description;
-        done = source.done;
-        deadline = source.deadline;
-        group = source.group;
+    void setProject(final Project project) {
+        this.project = project;
     }
 }
