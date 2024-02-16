@@ -35,6 +35,10 @@ public class Task {
     @Setter(AccessLevel.NONE)
     private Audit audit = new Audit();
     
+    @ManyToOne // many tasks to one group
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
+    
     public void updateFrom(final Task source) {
         description = source.description;
         done = source.done;
