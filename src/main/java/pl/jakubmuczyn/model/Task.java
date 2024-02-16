@@ -2,6 +2,7 @@ package pl.jakubmuczyn.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,4 +26,9 @@ public class Task {
     private boolean done;
     
     private LocalDateTime deadline;
+    
+    @Transient // tego pola nie chcemy zapisywać w bazie danych
+    private LocalDateTime createdOn;
+    
+    private LocalDateTime updatedOn;
 }
