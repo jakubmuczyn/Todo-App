@@ -1,10 +1,16 @@
 package pl.jakubmuczyn.adapter;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.jakubmuczyn.model.TaskGroup;
 import pl.jakubmuczyn.model.TaskGroupRepository;
 
+import java.util.List;
+
 @Repository
 interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup, Integer> {
+    @Override
+    @Query("from TaskGroup g join fetch g.tasks") // fetch dociąga od razu wszystkie taski rozwiązując problem n+1 selectów
+    List<TaskGroup> findAll();
 }
