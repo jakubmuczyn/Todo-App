@@ -14,20 +14,20 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
     @NotBlank(message = "Task's description must not be empty")
     private String description;
-    
     private boolean done;
-    
     private LocalDateTime deadline;
-    
     @Embedded
     private Audit audit = new Audit();
-    
     @ManyToOne // many tasks to one group
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
+    
+    public Task(final String description, final LocalDateTime deadline) {
+        this.description = description;
+        this.deadline = deadline;
+    }
     
     public int getId() {
         return id;
