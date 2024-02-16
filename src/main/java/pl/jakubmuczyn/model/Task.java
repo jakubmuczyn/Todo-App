@@ -28,7 +28,11 @@ public class Task {
     private LocalDateTime deadline;
     
     @Transient // tego pola nie chcemy zapisywać w bazie danych
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private LocalDateTime createdOn;
     
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private LocalDateTime updatedOn;
 }
