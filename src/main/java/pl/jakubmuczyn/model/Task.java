@@ -2,15 +2,10 @@ package pl.jakubmuczyn.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
@@ -18,28 +13,61 @@ public class Task {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PACKAGE) // setter != public
     private int id;
     
     @NotBlank(message = "Task's description must not be empty")
-    @Setter(AccessLevel.PACKAGE)
     private String description;
     
     private boolean done;
     
-    @Setter(AccessLevel.PACKAGE)
     private LocalDateTime deadline;
     
     @Embedded
-    @Getter(AccessLevel.PACKAGE)
-    @Setter(AccessLevel.PACKAGE)
     private Audit audit = new Audit();
     
     @ManyToOne // many tasks to one group
     @JoinColumn(name = "task_group_id")
-    @Getter(AccessLevel.PACKAGE)
-    @Setter(AccessLevel.PACKAGE)
     private TaskGroup group;
+    
+    public int getId() {
+        return id;
+    }
+    
+    void setId(final int id) {
+        this.id = id;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    void setDescription(final String description) {
+        this.description = description;
+    }
+    
+    public boolean isDone() {
+        return done;
+    }
+    
+    public void setDone(final boolean done) {
+        this.done = done;
+    }
+    
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+    
+    void setDeadline(final LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+    
+    TaskGroup getGroup() {
+        return group;
+    }
+    
+    void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
     
     public void updateFrom(final Task source) {
         description = source.description;
