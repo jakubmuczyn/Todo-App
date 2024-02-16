@@ -1,13 +1,13 @@
 package pl.jakubmuczyn.model;
 
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 import java.time.LocalDateTime;
 
-@MappedSuperclass // klasa bazowa która nie ma odzwierciedlenia w tabeli
-abstract class BaseAuditableEntity {
+@Embeddable
+class Audit {
     
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;

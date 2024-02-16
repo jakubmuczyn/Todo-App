@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
-public class Task extends BaseAuditableEntity{
+public class Task {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,11 @@ public class Task extends BaseAuditableEntity{
     
     @Setter(AccessLevel.PACKAGE)
     private LocalDateTime deadline;
+    
+    @Embedded
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Audit audit = new Audit();
     
     public void updateFrom(final Task source) {
         description = source.description;
