@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,8 +27,7 @@ public class TaskGroup {
     
     private boolean done;
     
-    @Embedded
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private Audit audit = new Audit();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group") // jedna grupa przypisana do wielu tasków
+    @Setter(AccessLevel.PACKAGE)
+    private Set<Task> tasks;
 }
