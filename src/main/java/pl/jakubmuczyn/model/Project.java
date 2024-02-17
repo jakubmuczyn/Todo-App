@@ -2,9 +2,11 @@ package pl.jakubmuczyn.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "projects")
 public class Project {
