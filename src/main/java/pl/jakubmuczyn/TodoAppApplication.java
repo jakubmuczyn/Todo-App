@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication
+// @ComponentScan(basePackages = "db.migration") - skanowanie innych ścieżek
+// @Import(TaskConfigurationProperties.class) - import innych klas konfiguracyjnych
 public class TodoAppApplication {
     
     public static void main(String[] args) {
