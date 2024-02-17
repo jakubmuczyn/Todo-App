@@ -2,6 +2,7 @@ package pl.jakubmuczyn;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.jakubmuczyn.model.Task;
@@ -13,6 +14,7 @@ import java.util.*;
 class TestConfiguration {
     
     @Bean
+    @Profile({"integration", "!prod"})
     TaskRepository testTaskRepository() {
         return new TaskRepository() {
             private Map<Integer, Task> tasks = new HashMap<>();
