@@ -7,7 +7,7 @@ import pl.jakubmuczyn.model.TaskGroupRepository;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,13 +28,14 @@ class ProjectServiceTest {
         when(mockConfig.getTemplate()).thenReturn(mockTemplate);
         
         // system under test
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var projectServiceToTest = new ProjectService(null, mockGroupRepository, mockConfig);
         
         // when
-        toTest.createGroup(LocalDateTime.now(), 0);
+        var exception = catchThrowable(() -> projectServiceToTest.createGroup(LocalDateTime.now(), 0));
         
         // then
-        
-        
+        assertThat(exception)
+                .isInstanceOf(IllegalAccessException.class)
+                .hasMessageContaining("one undone group");
     }
 }
