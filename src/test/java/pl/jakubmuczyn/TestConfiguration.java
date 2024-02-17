@@ -14,7 +14,7 @@ import java.util.*;
 class TestConfiguration {
     
     @Bean
-    @Profile({"integration", "!prod"})
+    @Profile("integration")
     TaskRepository testTaskRepository() {
         return new TaskRepository() {
             private Map<Integer, Task> tasks = new HashMap<>();
