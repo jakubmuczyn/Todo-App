@@ -80,6 +80,23 @@ class ProjectServiceTest {
                 .hasMessageContaining("id not found");
     }
     
+    @Test
+    @DisplayName("should create a new group from project.")
+    void createGroup_configurationOk_existingProject_createsAndSavesGroup() {
+        // given
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+        
+        TaskConfigurationProperties mockConfig = configurationReturning(true);
+        
+        // when
+        
+        
+        // then
+        
+        
+    }
+    
     private static TaskGroupRepository groupRepositoryReturning(final boolean value) {
         var mockGroupRepository = mock(TaskGroupRepository.class);
         when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(value);
