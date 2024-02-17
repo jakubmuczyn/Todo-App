@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@Service
+// @Service
 @RequestScope // w obrębie jednego żądania mamy unikalną instancję serwisu (@Scope - adnotacja mówiąca jak ten obiekt powinien być wstrzykiwany)
 public class TaskGroupService {
     
