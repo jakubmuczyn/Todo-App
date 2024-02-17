@@ -6,13 +6,24 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 @Configuration
 class TestConfiguration {
+    
+    @Bean
+    @Primary
+    @Profile("!integration")
+    DataSource e2eTestDataSource() {
+        var result = new DriverManagerDataSource("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "jakubmuczyn", "");
+        result.setDriverClassName("org.h2.Driver");
+        return result;
+    }
     
     @Bean
     @Primary
