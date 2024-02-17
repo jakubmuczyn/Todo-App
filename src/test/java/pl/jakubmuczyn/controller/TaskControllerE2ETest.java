@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TaskControllerE2ETest {
     
@@ -20,7 +24,6 @@ class TaskControllerE2ETest {
     @Autowired
     private TestRestTemplate restTemplate; // możemy strzelać zapytaniami jak w Postmanie
     
-    @Qualifier("sqlTaskRepository")
     @Autowired
     TaskRepository taskRepository;
 
@@ -31,10 +34,10 @@ class TaskControllerE2ETest {
         taskRepository.save(new Task("test description 2", LocalDateTime.now()));
         
         // when
-        
+        Task[] result = restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
         
         // then
-        
+        assertThat(result).hasSize(2);
         
     }
 }
