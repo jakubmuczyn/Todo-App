@@ -36,6 +36,7 @@ class GroupController {
     
     @GetMapping
     ResponseEntity<List<GroupReadModel>> readAllGroups() {
+        logger.warn("Exposing all the groups!");
         return ResponseEntity.ok(groupService.readAll());
     }
     
