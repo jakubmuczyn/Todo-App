@@ -1,5 +1,7 @@
 package pl.jakubmuczyn.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.jakubmuczyn.model.Task;
@@ -11,6 +13,8 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class TaskService {
     
+    private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
+    
     private final TaskRepository taskRepository;
     
     public TaskService(final TaskRepository taskRepository) {
@@ -19,6 +23,7 @@ public class TaskService {
     
     @Async
     public CompletableFuture<List<Task>> findAllAsync() {
+        logger.info("Supply async!");
         return CompletableFuture.supplyAsync(taskRepository::findAll);
     }
 }
