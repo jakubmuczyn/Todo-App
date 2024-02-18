@@ -48,6 +48,13 @@ class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
     
+    @GetMapping("/search/done")
+    ResponseEntity<List<Task>> readDonetasks(@RequestParam(defaultValue = "true") boolean state) {
+        return ResponseEntity.ok(
+                repository.findByDone(state)
+        );
+    }
+    
     @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
