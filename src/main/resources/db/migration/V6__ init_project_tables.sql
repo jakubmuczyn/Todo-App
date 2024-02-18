@@ -11,8 +11,8 @@ create table project_steps
     project_id       int          not null,
     foreign key (project_id) references projects (id)
 );
-alter table task_groups
+alter table groups
     add column project_id int null;
-alter table task_groups
+alter table groups
     add foreign key (project_id) references projects (id);
 

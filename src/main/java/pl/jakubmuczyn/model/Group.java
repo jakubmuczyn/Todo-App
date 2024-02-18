@@ -8,8 +8,8 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "task_groups")
-public class TaskGroup {
+@Table(name = "groups")
+public class Group {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

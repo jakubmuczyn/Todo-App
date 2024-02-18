@@ -28,8 +28,8 @@ class TaskController {
     }
     
     @PostMapping
-    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate) {
-        Task result = taskRepository.save(toCreate);
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
+        Task result = taskRepository.save(task);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
     

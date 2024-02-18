@@ -6,12 +6,12 @@ import pl.jakubmuczyn.model.Task;
 
 @Getter
 @Setter
-public class GroupTaskReadModel {
+public class TaskReadModel {
     
     private String description;
     private boolean done;
     
-    public GroupTaskReadModel(Task source) {
+    public TaskReadModel(Task source) {
         description = source.getDescription();
         done = source.isDone();
     }

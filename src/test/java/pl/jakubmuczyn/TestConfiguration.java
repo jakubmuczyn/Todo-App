@@ -8,11 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.jakubmuczyn.model.Task;
-import pl.jakubmuczyn.model.TaskGroup;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 import java.util.*;
 
 @Configuration

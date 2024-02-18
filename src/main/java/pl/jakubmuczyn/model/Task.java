@@ -21,14 +21,14 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne // many tasks to one group
-    @JoinColumn(name = "task_group_id")
-    private TaskGroup group;
+    @JoinColumn(name = "group_id")
+    private Group group;
     
     public Task(String description, LocalDateTime deadline) {
         this(description, deadline, null);
     }
     
-    public Task(String description, LocalDateTime deadline, TaskGroup group) {
+    public Task(String description, LocalDateTime deadline, Group group) {
         this.description = description;
         this.deadline = deadline;
         if (group != null) {
@@ -68,11 +68,11 @@ public class Task {
         this.deadline = deadline;
     }
     
-    TaskGroup getGroup() {
+    Group getGroup() {
         return group;
     }
     
-    void setGroup(final TaskGroup group) {
+    void setGroup(final Group group) {
         this.group = group;
     }
     

@@ -3,10 +3,9 @@ package pl.jakubmuczyn.model.projection;
 import lombok.Getter;
 import lombok.Setter;
 import pl.jakubmuczyn.model.Task;
-import pl.jakubmuczyn.model.TaskGroup;
+import pl.jakubmuczyn.model.Group;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,16 +20,16 @@ public class GroupReadModel {
      */
     private LocalDateTime deadline;
     
-    private Set<GroupTaskReadModel> tasks;
+    private Set<TaskReadModel> tasks;
     
-    public GroupReadModel(TaskGroup source) {
+    public GroupReadModel(Group source) {
         description = source.getDescription();
         source.getTasks().stream()
                 .map(Task::getDeadline)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> deadline = date);
         tasks = source.getTasks().stream()
-                .map(GroupTaskReadModel::new)
+                .map(TaskReadModel::new)
                 .collect(Collectors.toSet());
     }
 }
