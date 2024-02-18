@@ -22,8 +22,8 @@ class TaskController {
     private final TaskRepository taskRepository;
     private final TaskService taskService;
     
-    TaskController(final TaskRepository repository, final TaskService taskService) {
-        this.taskRepository = repository;
+    TaskController(final TaskRepository taskRepository, final TaskService taskService) {
+        this.taskRepository = taskRepository;
         this.taskService = taskService;
     }
     
@@ -36,8 +36,7 @@ class TaskController {
     @GetMapping(params = {"!sort", "!page", "!size"})
     CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() { // CompleteableFuture - "obietnica", akcja odroczona
         logger.warn("Exposing all the tasks!");
-        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
-        // return ResponseEntity.ok(taskRepository.findAll()); // stara wersja
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok); // return ResponseEntity.ok(taskRepository.findAll()); // stara wersja
     }
     
     @GetMapping
