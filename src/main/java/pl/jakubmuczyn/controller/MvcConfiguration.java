@@ -1,13 +1,23 @@
 package pl.jakubmuczyn.controller;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Set;
+
 @Configuration
 class MvcConfiguration implements WebMvcConfigurer {
+    
+    private final Set<HandlerInterceptor> interceptors; // wszystkie interceptory implementujące HandlerInterceptor będą wstrzyknięte
+    
+    MvcConfiguration(final Set<HandlerInterceptor> interceptors) {
+        this.interceptors = interceptors;
+    }
+    
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(new LoggerInterceptor());
+        interceptors.forEach(registry::addInterceptor); // uogólnione wstrzykiwanie wszystkich interceptorów za jednym zamachem
     }
 }

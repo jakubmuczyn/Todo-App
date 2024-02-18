@@ -20,6 +20,5 @@ public class LoggerFilter implements Filter {
             logger.info("[preDoFilter] " + httpRequest.getMethod() + " " + httpRequest.getRequestURI());
         }
         chain.doFilter(request, response);
-        logger.info("[postDoFilter]");
     }
 }
