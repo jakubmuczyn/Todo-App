@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,4 +23,7 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
     
     @Override
     List<Task> findAllByGroup_Id(Integer groupId);
+    
+    @Override
+    List<Task> findAllByDeadlineIsNullOrDeadlineBefore(LocalDateTime today);
 }

@@ -11,6 +11,8 @@ import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Configuration
@@ -78,6 +80,11 @@ class TestConfiguration {
             
             @Override
             public List<Task> findAllByGroup_Id(final Integer groupId) {
+                return List.of();
+            }
+            
+            @Override
+            public List<Task> findAllByDeadlineIsNullOrDeadlineBefore(final LocalDateTime today) {
                 return List.of();
             }
         };

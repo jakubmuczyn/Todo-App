@@ -3,6 +3,7 @@ package pl.jakubmuczyn.controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,10 @@ import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -57,6 +62,13 @@ class TaskController {
         return ResponseEntity.ok(
                 taskRepository.findByDone(state)
         );
+    }
+    
+    @GetMapping("/search/today")
+    ResponseEntity<List<Task>> readTasksForToday() {
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        return ResponseEntity.ok(
+                taskRepository.findAllByDeadlineIsNullOrDeadlineBefore(endOfDay));
     }
     
     @PutMapping("/{id}")
