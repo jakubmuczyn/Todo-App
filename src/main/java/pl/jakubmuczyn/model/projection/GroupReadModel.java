@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @Setter
 public class GroupReadModel {
     
+    private int id;
+    
     private String description;
     
     /**
@@ -23,6 +25,7 @@ public class GroupReadModel {
     private Set<TaskReadModel> tasks;
     
     public GroupReadModel(Group source) {
+        id = source.getId();
         description = source.getDescription();
         source.getTasks().stream()
                 .map(Task::getDeadline)

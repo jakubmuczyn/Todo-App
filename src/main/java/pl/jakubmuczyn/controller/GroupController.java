@@ -30,7 +30,8 @@ class GroupController {
     
     @PostMapping
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel groupWriteModel) {
-        return ResponseEntity.created(URI.create("/")).body(groupService.createGroup(groupWriteModel));
+        GroupReadModel result = groupService.createGroup(groupWriteModel);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
     
     @GetMapping
