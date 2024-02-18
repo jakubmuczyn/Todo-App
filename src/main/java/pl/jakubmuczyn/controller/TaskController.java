@@ -3,7 +3,6 @@ package pl.jakubmuczyn.controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,6 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -58,7 +56,7 @@ class TaskController {
     }
     
     @GetMapping("/search/done")
-    ResponseEntity<List<Task>> readDonetasks(@RequestParam(defaultValue = "true") boolean state) {
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) {
         return ResponseEntity.ok(
                 taskRepository.findByDone(state)
         );
