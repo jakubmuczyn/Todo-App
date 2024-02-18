@@ -19,7 +19,7 @@ class TaskControllerE2ETest {
     private int port;
     
     @Autowired
-    private TestRestTemplate restTemplate; // możemy strzelać zapytaniami jak w Postmanie
+    private TestRestTemplate testRestTemplate; // możemy strzelać zapytaniami jak w Postmanie
     
     @Autowired
     TaskRepository taskRepository;
@@ -32,7 +32,7 @@ class TaskControllerE2ETest {
         taskRepository.save(new Task("test description 2", LocalDateTime.now()));
         
         // when
-        Task[] result = restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
+        Task[] result = testRestTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
         
         // then
         assertThat(result).hasSize(initial + 2);
@@ -44,7 +44,7 @@ class TaskControllerE2ETest {
         Task task = taskRepository.save(new Task("test description 1", LocalDateTime.now()));
         
         // when
-        Task result = restTemplate.getForObject("http://localhost:" + port + "/tasks/" + task.getId(), Task.class);
+        Task result = testRestTemplate.getForObject("http://localhost:" + port + "/tasks/" + task.getId(), Task.class);
         
         // then
         assertThat(result.getDescription()).isEqualTo(task.getDescription());

@@ -19,7 +19,7 @@ public class Project {
     private String description;
     
     @OneToMany(mappedBy = "project")
-    private Set<TaskGroup> groups;
+    private Set<Group> groups;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private Set<ProjectStep> steps;
@@ -40,11 +40,11 @@ public class Project {
         this.description = description;
     }
     
-    Set<TaskGroup> getGroups() {
+    Set<Group> getGroups() {
         return groups;
     }
     
-    void setGroups(final Set<TaskGroup> groups) {
+    void setGroups(final Set<Group> groups) {
         this.groups = groups;
     }
     

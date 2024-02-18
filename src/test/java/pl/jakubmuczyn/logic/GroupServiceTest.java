@@ -2,8 +2,8 @@ package pl.jakubmuczyn.logic;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.jakubmuczyn.model.TaskGroup;
-import pl.jakubmuczyn.model.TaskGroupRepository;
+import pl.jakubmuczyn.model.Group;
+import pl.jakubmuczyn.model.GroupRepository;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import java.util.Optional;
@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class TaskGroupServiceTest {
+class GroupServiceTest {
     
     // metoda_stan_wynik()
     @Test
@@ -24,10 +24,10 @@ class TaskGroupServiceTest {
         TaskRepository mockTaskRepository = taskRepositoryReturning(true);
         
         // system under test
-        var taskGroupServiceToTest = new TaskGroupService(mockTaskRepository, null);
+        var groupServiceToTest = new GroupService(mockTaskRepository, null);
         
         // when
-        var exception = catchThrowable(() -> taskGroupServiceToTest.toggleGroup(1));
+        var exception = catchThrowable(() -> groupServiceToTest.toggleGroup(1));
         
         // then
         assertThat(exception)
@@ -41,14 +41,14 @@ class TaskGroupServiceTest {
         // given
         TaskRepository mockTaskRepository = taskRepositoryReturning(false);
         // and
-        var mockTaskGroupRepository = mock(TaskGroupRepository.class);
-        when(mockTaskGroupRepository.findById(anyInt())).thenReturn(Optional.empty());
+        var mockGroupRepository = mock(GroupRepository.class);
+        when(mockGroupRepository.findById(anyInt())).thenReturn(Optional.empty());
         
         // system under test
-        var taskGroupServiceToTest = new TaskGroupService(mockTaskRepository, mockTaskGroupRepository);
+        var groupServiceToTest = new GroupService(mockTaskRepository, mockGroupRepository);
         
         // when
-        var exception = catchThrowable(() -> taskGroupServiceToTest.toggleGroup(1));
+        var exception = catchThrowable(() -> groupServiceToTest.toggleGroup(1));
         
         // then
         assertThat(exception)
@@ -62,20 +62,20 @@ class TaskGroupServiceTest {
         // given
         TaskRepository mockTaskRepository = taskRepositoryReturning(false);
         // and
-        var taskGroup = new TaskGroup();
-        var beforeToggle = taskGroup.isDone();
+        var group = new Group();
+        var beforeToggle = group.isDone();
         
-        var mockTaskGroupRepository = mock(TaskGroupRepository.class);
-        when(mockTaskGroupRepository.findById(anyInt())).thenReturn(Optional.of(taskGroup));
+        var mockGroupRepository = mock(GroupRepository.class);
+        when(mockGroupRepository.findById(anyInt())).thenReturn(Optional.of(group));
         
         // system under test
-        var taskGroupServiceToTest = new TaskGroupService(mockTaskRepository, mockTaskGroupRepository);
+        var groupServiceToTest = new GroupService(mockTaskRepository, mockGroupRepository);
         
         // when
-        taskGroupServiceToTest.toggleGroup(0);
+        groupServiceToTest.toggleGroup(0);
         
         // then
-        assertThat(taskGroup.isDone()).isEqualTo(!beforeToggle);
+        assertThat(group.isDone()).isEqualTo(!beforeToggle);
     }
     
     private static TaskRepository taskRepositoryReturning(final boolean value) {

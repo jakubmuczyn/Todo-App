@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.jakubmuczyn.TaskConfigurationProperties;
 import pl.jakubmuczyn.model.ProjectRepository;
-import pl.jakubmuczyn.model.TaskGroupRepository;
+import pl.jakubmuczyn.model.GroupRepository;
 import pl.jakubmuczyn.model.TaskRepository;
 
 @Configuration
@@ -13,18 +13,18 @@ class LogicConfiguration {
     @Bean
     ProjectService projectService(
             final ProjectRepository projectRepository,
-            final TaskGroupRepository taskGroupRepository,
-            final TaskGroupService taskGroupService,
+            final GroupRepository groupRepository,
+            final GroupService groupService,
             final TaskConfigurationProperties taskConfigurationProperties
     ) {
-        return new ProjectService(projectRepository, taskGroupRepository, taskGroupService, taskConfigurationProperties);
+        return new ProjectService(projectRepository, groupRepository, groupService, taskConfigurationProperties);
     }
     
     @Bean
-    TaskGroupService taskGroupService(
+    GroupService groupService(
             final TaskRepository taskRepository,
-            final TaskGroupRepository taskGroupRepository
+            final GroupRepository groupRepository
     ) {
-        return new TaskGroupService(taskRepository, taskGroupRepository);
+        return new GroupService(taskRepository, groupRepository);
     }
 }

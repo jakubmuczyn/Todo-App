@@ -7,68 +7,90 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubmuczyn.logic.TaskService;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
+@RequestMapping("/tasks")
 class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
-    private final TaskRepository repository;
+    private final TaskRepository taskRepository;
+    private final TaskService taskService;
     
-    TaskController(final TaskRepository repository) {
-        this.repository = repository;
+    TaskController(final TaskRepository taskRepository, final TaskService taskService) {
+        this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
     
-    @PostMapping("/tasks")
-    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate) {
-        Task result = repository.save(toCreate);
+    @PostMapping
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
+        Task result = taskRepository.save(task);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
     
-    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
-    ResponseEntity<List<Task>> readAllTasks() {
+    @GetMapping(params = {"!sort", "!page", "!size"})
+    CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() { // CompleteableFuture - "obietnica", akcja odroczona
         logger.warn("Exposing all the tasks!");
-        return ResponseEntity.ok(repository.findAll());
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok); // return ResponseEntity.ok(taskRepository.findAll()); // stara wersja
     }
     
-    @GetMapping(value = "/tasks")
+    @GetMapping
     ResponseEntity<List<Task>> readAllTasks(Pageable page) {
         logger.info("Custom pageable");
-        return ResponseEntity.ok(repository.findAll(page).getContent());
+        return ResponseEntity.ok(taskRepository.findAll(page).getContent());
     }
     
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Task> readTask(@PathVariable int id) {
-        return repository.findById(id)
+        return taskRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     
-    @PutMapping("/tasks/{id}")
+    @GetMapping("/search/done")
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) {
+        return ResponseEntity.ok(
+                taskRepository.findByDone(state)
+        );
+    }
+    
+    @GetMapping("/search/today")
+    ResponseEntity<List<Task>> readTasksForToday() {
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        return ResponseEntity.ok(
+                taskRepository.findAllByDeadlineIsNullOrDeadlineBefore(endOfDay));
+    }
+    
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
-        if (!repository.existsById(id)) {
+        if (!taskRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         
-        repository.findById(id)
+        taskRepository.findById(id)
                 .ifPresent(task -> {
                     task.updateFrom(toUpdate);
-                    repository.save(task);
+                    taskRepository.save(task);
                 });
         return ResponseEntity.noContent().build();
     }
     
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {
-        if (!repository.existsById(id)) {
+        if (!taskRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         
-        repository.findById(id)
+        taskRepository.findById(id)
                 .ifPresent(task -> task.setDone(!task.isDone()));
         return ResponseEntity.noContent().build();
     }

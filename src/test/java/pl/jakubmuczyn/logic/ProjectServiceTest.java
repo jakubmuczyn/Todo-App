@@ -22,7 +22,7 @@ class ProjectServiceTest {
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and the other undone group exists.")
     void createGroup_noMultipleGroupsConfig_and_undoneGroupExists_throwsIllegalStateException() {
         // given
-        TaskGroupRepository mockGroupRepository = taskGroupRepositoryReturning(true);
+        GroupRepository mockGroupRepository = groupRepositoryReturning(true);
         // and
         TaskConfigurationProperties mockConfig = taskConfigurationPropertiesReturning(false);
         // system under test
@@ -64,7 +64,7 @@ class ProjectServiceTest {
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
         // and
-        TaskGroupRepository mockGroupRepository = taskGroupRepositoryReturning(false);
+        GroupRepository mockGroupRepository = groupRepositoryReturning(false);
         // and
         TaskConfigurationProperties mockConfig = taskConfigurationPropertiesReturning(true);
         // system under test
@@ -91,7 +91,7 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
         // and
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
-        var serviceWithInMemoryRepository = dummyGroupServie(inMemoryGroupRepo);
+        var serviceWithInMemoryRepository = dummyGroupService(inMemoryGroupRepo);
         int countBeforeCall = inMemoryGroupRepo.count();
         // and
         TaskConfigurationProperties mockConfig = taskConfigurationPropertiesReturning(true);
@@ -108,8 +108,8 @@ class ProjectServiceTest {
         assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepo.count());
     }
     
-    private static TaskGroupService dummyGroupServie(final InMemoryGroupRepository inMemoryGroupRepo) {
-        return new TaskGroupService(null, inMemoryGroupRepo);
+    private static GroupService dummyGroupService(final InMemoryGroupRepository inMemoryGroupRepository) {
+        return new GroupService(null, inMemoryGroupRepository);
     }
     
     private Project projectWith(String projectDescription, Set<Integer> daysToDeadline) {
@@ -126,8 +126,8 @@ class ProjectServiceTest {
         return result;
     }
     
-    private static TaskGroupRepository taskGroupRepositoryReturning(final boolean value) {
-        var mockGroupRepository = mock(TaskGroupRepository.class);
+    private static GroupRepository groupRepositoryReturning(final boolean value) {
+        var mockGroupRepository = mock(GroupRepository.class);
         when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(value);
         return mockGroupRepository;
     }
@@ -146,29 +146,29 @@ class ProjectServiceTest {
         return new InMemoryGroupRepository();
     }
     
-    private static class InMemoryGroupRepository implements TaskGroupRepository {
+    private static class InMemoryGroupRepository implements GroupRepository {
         private int index = 0;
-        private Map<Integer, TaskGroup> map = new HashMap<>();
+        private Map<Integer, Group> map = new HashMap<>();
         
         public int count() {
             return map.values().size();
         }
         
         @Override
-        public List<TaskGroup> findAll() {
+        public List<Group> findAll() {
             return new ArrayList<>(map.values());
         }
         
         @Override
-        public Optional<TaskGroup> findById(final Integer id) {
+        public Optional<Group> findById(final Integer id) {
             return Optional.ofNullable(map.get(id));
         }
         
         @Override
-        public TaskGroup save(final TaskGroup entity) {
+        public Group save(final Group entity) {
             if (entity.getId() == 0) {
                 try {
-                    var field = TaskGroup.class.getDeclaredField("id"); // refleksja
+                    var field = Group.class.getDeclaredField("id"); // refleksja
                     field.setAccessible(true);
                     field.set(entity, ++index);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -182,8 +182,8 @@ class ProjectServiceTest {
         @Override
         public boolean existsByDoneIsFalseAndProject_Id(final Integer projectId) {
             return map.values().stream()
-                    .filter(taskGroup -> !taskGroup.isDone())
-                    .anyMatch(taskGroup -> taskGroup.getProject() != null && taskGroup.getProject().getId() == projectId);
+                    .filter(group -> !group.isDone())
+                    .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
         }
     }
 }
