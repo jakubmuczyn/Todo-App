@@ -4,8 +4,10 @@ import jakarta.validation.Validator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+@EnableAsync
 @SpringBootApplication
 // @ComponentScan(basePackages = "db.migration") - skanowanie innych ścieżek
 // @Import(TaskConfigurationProperties.class) - import innych klas konfiguracyjnych
