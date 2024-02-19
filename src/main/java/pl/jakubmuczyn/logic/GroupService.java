@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.context.annotation.RequestScope;
 import pl.jakubmuczyn.model.Group;
 import pl.jakubmuczyn.model.GroupRepository;
+import pl.jakubmuczyn.model.Project;
 import pl.jakubmuczyn.model.TaskRepository;
 import pl.jakubmuczyn.model.projection.GroupReadModel;
 import pl.jakubmuczyn.model.projection.GroupWriteModel;
@@ -20,7 +21,11 @@ public class GroupService {
     private GroupRepository groupRepository;
     
     public GroupReadModel createGroup(final GroupWriteModel source) {
-        Group result = groupRepository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+    
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        Group result = groupRepository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
     

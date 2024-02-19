@@ -6,6 +6,7 @@ import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.Group;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,14 +25,15 @@ public class GroupReadModel {
     
     private Set<TaskReadModel> tasks;
     
-    public GroupReadModel(Group source) {
-        id = source.getId();
-        description = source.getDescription();
-        source.getTasks().stream()
+    public GroupReadModel(Group group) {
+        id = group.getId();
+        description = group.getDescription();
+        group.getTasks().stream()
                 .map(Task::getDeadline)
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> deadline = date);
-        tasks = source.getTasks().stream()
+        tasks = group.getTasks().stream()
                 .map(TaskReadModel::new)
                 .collect(Collectors.toSet());
     }

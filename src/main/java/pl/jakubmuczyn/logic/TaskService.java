@@ -1,5 +1,6 @@
 package pl.jakubmuczyn.logic;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -10,6 +11,7 @@ import pl.jakubmuczyn.model.TaskRepository;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@RequiredArgsConstructor
 @Service
 public class TaskService {
     
@@ -17,12 +19,8 @@ public class TaskService {
     
     private final TaskRepository taskRepository;
     
-    public TaskService(final TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
-    
     @Async
-    public CompletableFuture<List<Task>> findAllAsync() {
+    public CompletableFuture<List<Task>> findAllAsync() { // removed because of errors in test
         logger.info("Supply async!");
         return CompletableFuture.supplyAsync(taskRepository::findAll);
     }

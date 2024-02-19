@@ -6,6 +6,7 @@ import pl.jakubmuczyn.model.Project;
 import pl.jakubmuczyn.model.ProjectRepository;
 import pl.jakubmuczyn.model.GroupRepository;
 import pl.jakubmuczyn.model.projection.GroupReadModel;
+import pl.jakubmuczyn.model.projection.ProjectWriteModel;
 import pl.jakubmuczyn.model.projection.TaskWriteModel;
 import pl.jakubmuczyn.model.projection.GroupWriteModel;
 
@@ -26,8 +27,8 @@ public class ProjectService {
         return repository.findAll();
     }
     
-    public Project save(Project toSave) {
-        return repository.save(toSave);
+    public Project save(final ProjectWriteModel toSave) {
+        return repository.save(toSave.toProject());
     }
     
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
@@ -46,9 +47,9 @@ public class ProjectService {
                                                 task.setDeadline(deadline.plusDays(projectStep.getDaysToDeadline()));
                                                 return task;
                                             }
-                                    ).collect(Collectors.toSet())
+                                    ).collect(Collectors.toList())
                     );
-                    return groupService.createGroup(targetGroup);
+                    return groupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found."));
     }
 }
