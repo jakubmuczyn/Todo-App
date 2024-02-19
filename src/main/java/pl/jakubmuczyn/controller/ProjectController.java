@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.jakubmuczyn.model.ProjectStep;
 import pl.jakubmuczyn.model.projection.ProjectWriteModel;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/projects")
 class ProjectController {
@@ -22,6 +24,15 @@ class ProjectController {
     @PostMapping(params = "addStep")
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel projectWriteModel) {
         projectWriteModel.getSteps().add(new ProjectStep());
+        return "projects";
+    }
+    
+    @PostMapping(params = "removeStep")
+    String removeProjectStep(@ModelAttribute("project") ProjectWriteModel projectWriteModel) {
+        List<ProjectStep> steps = projectWriteModel.getSteps();
+        if (!steps.isEmpty()) {
+            steps.remove(steps.size() - 1);
+        }
         return "projects";
     }
 }
