@@ -5,23 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App: projects</title>
     <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
+    <style>
+        .Bd {
+            border: solid 1px black;
+        }
+
+        .P\(0\) {
+            padding: 0;
+        }
+
+        .P\(10px\) {
+            padding: 10px;
+        }
+
+        .Mt\(5px\) {
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
 <main>
     <h1 th:if="${message != null}" th:text="${message}"></h1>
     <!--/*@thymesVar id="projects" type="java.util.List<pl.jakubmuczyn.model.Project"*/-->
-    <dl th:each="project : ${projects}">
+    <dl th:each="project: ${projects}" class="Bd P(10px)">
         <dt th:text="${project.description}"></dt>
         <dd>
-            <ul>
-                <li th:each="step : ${project.steps}" th:text="|${step.description} (${step.daysToDeadline} dni)|"></li>
+            <ul class="P(0)">
+                <li th:each="step: ${project.steps}" th:text="|${step.description} (${step.daysToDeadline} dni)|"></li>
             </ul>
         </dd>
     </dl>
-    <!--/*@thymesVar id="project" type="pl.jakubmuczyn.model.projection.ProjectWriteModel"*/-->
-    <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
-        <fieldset>
-            <legend>Nowy projekt</legend>
+    <fieldset>
+        <legend>Nowy projekt</legend>
+        <!--/*@thymesVar id="project" type="pl.jakubmuczyn.model.projection.ProjectWriteModel"*/-->
+        <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
             <label>Opis
                 <input type="text" th:field="*{description}"/>
             </label>
@@ -36,14 +53,15 @@
                 </label>
             </fieldset>
             <div>
-                <button type="submit" name="addStep">+</button>&nbsp;<button type="submit" name="removeStep">-</button>
+                <button type="submit" name="addStep" class="Mt(5px)">+</button>&nbsp;
+                <button type="submit" name="removeStep" class="Mt(5px))">-</button>
             </div>
-        </fieldset>
-        <p>
-            <button type="submit">Dodaj</button>
-            <button type="reset">Wyczyść</button>
-        </p>
-    </form>
+            <p>
+                <button type="submit">Dodaj</button>
+                <button type="reset">Wyczyść</button>
+            </p>
+        </form>
+    </fieldset>
 </main>
 </body>
 </html>
