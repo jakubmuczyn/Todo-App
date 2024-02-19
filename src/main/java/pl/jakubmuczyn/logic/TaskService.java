@@ -20,7 +20,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     
     @Async
-    public CompletableFuture<List<Task>> findAllAsync() {
+    public CompletableFuture<List<Task>> findAllAsync() { // removed because of errors in test
         logger.info("Supply async!");
         return CompletableFuture.supplyAsync(taskRepository::findAll);
     }

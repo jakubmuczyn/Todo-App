@@ -23,11 +23,9 @@ import java.util.concurrent.CompletableFuture;
 class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository taskRepository;
-    private final TaskService taskService;
     
-    TaskController(final TaskRepository taskRepository, final TaskService taskService) {
+    TaskController(final TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.taskService = taskService;
     }
     
     @PostMapping
@@ -37,9 +35,10 @@ class TaskController {
     }
     
     @GetMapping(params = {"!sort", "!page", "!size"})
-    CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() { // CompleteableFuture - "obietnica", akcja odroczona
+    ResponseEntity<List<Task>> readAllTasks() { // CompleteableFuture - "obietnica", akcja odroczona
         logger.warn("Exposing all the tasks!");
-        return taskService.findAllAsync().thenApply(ResponseEntity::ok); // return ResponseEntity.ok(taskRepository.findAll()); // stara wersja
+        return ResponseEntity.ok(taskRepository.findAll());
+        // return taskService.findAllAsync().thenApply(ResponseEntity::ok); // @Async
     }
     
     @GetMapping
