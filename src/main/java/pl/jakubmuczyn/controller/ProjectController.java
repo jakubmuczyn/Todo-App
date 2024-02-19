@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.jakubmuczyn.logic.ProjectService;
+import pl.jakubmuczyn.model.Project;
 import pl.jakubmuczyn.model.ProjectStep;
 import pl.jakubmuczyn.model.projection.ProjectWriteModel;
 
@@ -47,5 +48,10 @@ class ProjectController {
             steps.remove(steps.size() - 1);
         }
         return "projects";
+    }
+    
+    @ModelAttribute("projects")
+    List<Project> getProjects() {
+        return projectService.readAll();
     }
 }
