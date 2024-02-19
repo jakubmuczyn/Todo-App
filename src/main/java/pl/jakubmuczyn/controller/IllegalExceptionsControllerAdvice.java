@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(annotations = IllegalExceptionProcessing.class)
 class IllegalExceptionsControllerAdvice {
     
     @ExceptionHandler(IllegalArgumentException.class)
