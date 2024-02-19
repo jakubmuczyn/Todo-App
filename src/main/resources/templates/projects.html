@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,14 @@
 </head>
 <body>
 <main>
-    <fieldset>
-        <legend>Nowy projekt</legend>
-    </fieldset>
+    <form action="#" method="post" th:action="@{/projects}">
+        <fieldset>
+            <legend>Nowy projekt</legend>
+            <label>Opis
+                <input type="text"/>
+            </label>
+        </fieldset>
+    </form>
 </main>
 </body>
 </html>
