@@ -15,6 +15,17 @@
             <label>Opis
                 <input type="text" th:field="*{description}"/>
             </label>
+
+            <fieldset>
+                <legend>Krok 1</legend>
+                <label>Opis
+                    <input type="text" th:field="*{steps[0].description}"/>
+                </label>
+                <label>Dni do końca projektu
+                    <input type="text" th:field="*{steps[0].daysToDeadline}"/>
+                </label>
+            </fieldset>
+
         </fieldset>
     </form>
 </main>
