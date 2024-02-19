@@ -1,8 +1,10 @@
 package pl.jakubmuczyn.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,14 @@ class ProjectController {
     }
     
     @PostMapping
-    String addProject(@ModelAttribute("project") ProjectWriteModel projectWriteModel, Model model) {
+    String addProject(
+            @ModelAttribute("project") @Valid ProjectWriteModel projectWriteModel,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "projects";
+        }
         projectService.save(projectWriteModel);
         model.addAttribute("project", new ProjectWriteModel());
         model.addAttribute("message", "Dodano projekt!");
