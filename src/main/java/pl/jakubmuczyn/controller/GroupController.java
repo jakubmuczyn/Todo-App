@@ -89,16 +89,6 @@ class GroupController {
         return ResponseEntity.noContent().build();
     }
     
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-    
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    
     @ModelAttribute("groups")
     List<GroupReadModel> getGroups() {
         return groupService.readAll();
