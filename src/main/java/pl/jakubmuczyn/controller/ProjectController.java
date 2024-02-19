@@ -1,23 +1,36 @@
 package pl.jakubmuczyn.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.jakubmuczyn.logic.ProjectService;
 import pl.jakubmuczyn.model.ProjectStep;
 import pl.jakubmuczyn.model.projection.ProjectWriteModel;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/projects")
 class ProjectController {
     
+    private final ProjectService projectService;
+    
     @GetMapping
     String showProjects(Model model) {
         model.addAttribute("project", new ProjectWriteModel());
+        return "projects";
+    }
+    
+    @PostMapping
+    String addProject(@ModelAttribute("project") ProjectWriteModel projectWriteModel, Model model) {
+        projectService.save(projectWriteModel);
+        model.addAttribute("project", new ProjectWriteModel());
+        model.addAttribute("message", "Dodano projekt!");
         return "projects";
     }
     
