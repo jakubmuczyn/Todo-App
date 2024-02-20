@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component // zarejestrowanie w Springu tej klasy
 class LogicAspect {
     
-    @Around()
+    @Around("execution(* pl.jakubmuczyn.logic.ProjectService.createGroup(..))") // * - dowolny typ zwracany, .. - jakieś parametry
     Object aroungCreateGroupByProject(ProceedingJoinPoint joinPoint) {
         return joinPoint.proceed();
     }
