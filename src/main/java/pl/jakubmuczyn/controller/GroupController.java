@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
+@IllegalExceptionProcessing
 @RequestMapping("/groups")
 class GroupController {
     
@@ -82,21 +83,11 @@ class GroupController {
     }
     
     @ResponseBody
-    @Transactional
+    @Transactional // AOP (Aspect Oriented Programming), transakcja bazodanowa rozpoczyna się przed metodą i po niej zostaje zatwierdzona na bazie danych
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleGroup(@PathVariable int id) {
         groupService.toggleGroup(id);
         return ResponseEntity.noContent().build();
-    }
-    
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-    
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
     }
     
     @ModelAttribute("groups")

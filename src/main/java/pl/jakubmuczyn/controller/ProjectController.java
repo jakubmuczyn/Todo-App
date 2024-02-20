@@ -1,5 +1,6 @@
 package pl.jakubmuczyn.controller;
 
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,6 +60,19 @@ class ProjectController {
         return "projects";
     }
     
+    // tworzymy grupę wywołując ją przez metodę, bez Springowego proxy, więc @Timed nie zadziała
+    @PostMapping("/fake/{id}")
+    String createFakeGroup(
+            @ModelAttribute("project") ProjectWriteModel projectWriteModel,
+            Model model,
+            @PathVariable int id,
+            @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline
+    ) {
+        return createGroup(projectWriteModel, model, id, deadline);
+    }
+    
+    // @Timed - metoda wysyła do micrometera dodatkowe metryki, które możemy podejrzeć actuatorem
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99}) // histogram - zachowana ciągłość metryk
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel projectWriteModel,
