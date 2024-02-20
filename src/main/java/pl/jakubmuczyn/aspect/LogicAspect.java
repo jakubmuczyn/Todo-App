@@ -5,6 +5,8 @@ import io.micrometer.core.instrument.Timer;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Component // zarejestrowanie w Springu tej klasy
 class LogicAspect {
     
+    private static final Logger logger = LoggerFactory.getLogger(LogicAspect.class);
     private final Timer createGroupByProjectTimer;
     
     public LogicAspect(final MeterRegistry meterRegistry) { // podczas tworzenia tej klasy Sprign wstrzyknie rejestr metryk. MeterRegistry pozwala też tworzyć czasomierze
