@@ -83,7 +83,7 @@ class GroupController {
     }
     
     @ResponseBody
-    @Transactional
+    @Transactional // AOP (Aspect Oriented Programming), transakcja bazodanowa rozpoczyna się przed metodą i po niej zostaje zatwierdzona na bazie danych
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleGroup(@PathVariable int id) {
         groupService.toggleGroup(id);
