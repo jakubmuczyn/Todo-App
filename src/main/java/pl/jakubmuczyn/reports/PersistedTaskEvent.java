@@ -24,4 +24,12 @@ class PersistedTaskEvent {
         name = taskEvent.getClass().getSimpleName();
         occurrence = LocalDateTime.ofInstant(taskEvent.getOccurrence(), ZoneId.systemDefault());
     }
+    
+    String getName() {
+        return name;
+    }
+    
+    LocalDateTime getOccurrence() {
+        return occurrence;
+    }
 }
