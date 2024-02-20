@@ -24,18 +24,18 @@ public abstract class TaskEvent {
     }
     
     private int taskId;
-    private Instant occurence; // punkt w czasie
+    private Instant occurrence; // punkt w czasie
     
     TaskEvent(final int taskId, Clock clock) {
         this.taskId = taskId;
-        this.occurence = Instant.now(clock);
+        this.occurrence = Instant.now(clock);
     }
     
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "taskId=" + taskId +
-                ", occurence=" + occurence +
+                ", occurrence=" + occurrence +
                 '}';
     }
 }
