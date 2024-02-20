@@ -3,11 +3,11 @@ package pl.jakubmuczyn.controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubmuczyn.logic.TaskService;
 import pl.jakubmuczyn.model.Task;
 import pl.jakubmuczyn.model.TaskRepository;
 
@@ -16,15 +16,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
 class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final TaskRepository taskRepository;
     
-    TaskController(final TaskRepository taskRepository) {
+    TaskController(final ApplicationEventPublisher applicationEventPublisher, final TaskRepository taskRepository) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.taskRepository = taskRepository;
     }
     
@@ -82,7 +83,7 @@ class TaskController {
         return ResponseEntity.noContent().build();
     }
     
-    @Transactional
+    @Transactional // operacje które zmieniają nam stan i o tym informują, np. EventPublisherem powinny się dziać w transakcji
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id) {
         if (!taskRepository.existsById(id)) {
@@ -90,7 +91,8 @@ class TaskController {
         }
         
         taskRepository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(applicationEventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 }

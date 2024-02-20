@@ -3,6 +3,7 @@ package pl.jakubmuczyn.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
+import pl.jakubmuczyn.model.event.TaskEvent;
 
 import java.time.LocalDateTime;
 
@@ -56,8 +57,9 @@ public class Task {
         return done;
     }
     
-    public void setDone(final boolean done) {
-        this.done = done;
+    public TaskEvent toggle() {
+        this.done = !this.done;
+        return TaskEvent.changed(this);
     }
     
     public LocalDateTime getDeadline() {

@@ -11,4 +11,6 @@ public interface GroupRepository {
     Group save(Group entity);
     
     boolean existsByDoneIsFalseAndProject_Id(Integer projectId);
+    
+    boolean existsByDescription(String description);
 }

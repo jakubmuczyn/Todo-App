@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-@EnableAsync
+@EnableAsync // adnotacja potrzebna dla asynchroniczności w klasie głównej lub konfiguracyjnej
 @SpringBootApplication
 // @ComponentScan(basePackages = "db.migration") - skanowanie innych ścieżek
 // @Import(TaskConfigurationProperties.class) - import innych klas konfiguracyjnych
